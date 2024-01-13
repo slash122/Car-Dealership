@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <header class="header">
+        <a href="/pojazdy/">Pojazdy</a>
+        <a href="/salony/">Salony</a>
+        <a href="/pracownicy/">Pracownicy</a>
+        <a href="/klienci/">Klienci</a>
+        <a href="/faktury/">Faktury</a>
+        <a href="/serwisy/">Obsluga serwisowa</a>
+    </header>
+    {% block instance-content %} 
+    {% endblock %}
+{% endblock %}

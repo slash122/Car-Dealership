@@ -1,0 +1,82 @@
+{% extends 'sql_query_table.html' %}
+
+{% block instance-forms %}
+<div class="report-forms">
+    <form>
+        <label for="pojazdy_marki">Wypisać ilość oraz cenę wszystkich pojazdów dla każdej marki: </label>
+        <input type="button" id="pojazdy_marki" value="Wygenerować raport" name="pojazdy_marki" onclick="cars_per_brand()"><br>
+        
+        <label for="pojazdy_rank">Wypisać ranking ceny pojazdu odnośnie wszystkich pojazdów oraz odnośnie pojazdów tej samej marki: </label>
+        <input type="button" id="pojazdy_rank" value="Wygenerować raport" name="pojazdy_rank" onclick="cars_ranking()">
+        
+        <script>
+            function cars_per_brand() {window.location.href = "/pojazdy/raport1/"}
+            function cars_ranking() {window.location.href = "/pojazdy/raport2/"}
+        </script>
+    </form>
+    
+    <form action="/pojazdy/raport3" method="GET">
+        <label for="wybrana_marka">Wszystkie samochody wybranej marki</label>
+        <select id="wybrana_marka" name="marka">
+            {% for row in marki.1 %}
+            <option value="{{row.marka}}">{{row.marka}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Wygenerować raport">
+    </form>
+    
+</div>
+<div class="input-form">
+    <form action="/pojazdy/" method="post">
+        {% csrf_token %}
+
+        <label for="salon_id">Salon ID:</label>
+        <input type="number" id="salon_id" name="salon_id" required><br>
+
+        <label for="marka">Marka:</label>
+        <select id="marka" name="marka">
+            {% for marka in marki.1 %}
+            <option value="{{marka.marka}}">{{marka.marka}}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="typ">Typ:</label>
+        <input type="text" id="typ" name="typ" required maxlength="50"><br>
+
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" required maxlength="50"><br>
+
+        <label for="numer_vin">Numer VIN:</label>
+        <input type="text" id="numer_vin" name="numer_vin" required maxlength="17"><br>
+
+        <label for="cena">Cena:</label>
+        <input type="number" id="cena" name="cena" required><br>
+
+        <label for="przebieg">Przebieg:</label>
+        <input type="number" id="przebieg" name="przebieg" required><br>
+
+        <label for="data_produkcji">Data Produkcji:</label>
+        <input type="date" id="data_produkcji" name="data_produkcji" required><br>
+
+        <input type="submit" value="Dodaj">
+    </form>
+</div>
+<div>
+    <form action="/pojazdy/usun/" method="post">
+        {% csrf_token %}
+        <label for="usun_id">Usuń pojazd przez id</label>
+        <input type="number" id="usun_id" name="usun_id" required><br>
+        <input type="submit" value="Usunąć">
+    </form>
+</div>
+<div class = "error-div">
+    {% if error_msg %}
+    <h2>{{error_msg}}</h2>
+    {% endif %}
+</div>
+<div>
+    <form action="/pojazdy">
+        <input type="submit" value="Zapytanie domyślne">
+    </form>
+</div>
+{% endblock %}

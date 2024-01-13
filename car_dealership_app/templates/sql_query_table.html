@@ -1,0 +1,28 @@
+{% extends 'base_with_header.html' %}
+
+{% block instance-content %}
+    <div class="forms-wrapper">
+        {% block instance-forms %}
+        {% endblock %}
+    </div>    
+    <div class="query-table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    {% for column_name in data.0 %}
+                    <th>{{ column_name.upper }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for row in data.1 %}
+                <tr>
+                    {% for value in row.values %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+{% endblock %}
