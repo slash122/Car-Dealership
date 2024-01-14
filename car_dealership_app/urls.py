@@ -16,13 +16,13 @@ urlpatterns= [
     path('pracownicy/', views.handle_pracownicy),
     path('pracownicy/usun/', views.delete_pracownik),
 
-    path('klienci/', views.get_klienci),
-    
+    path('klienci/', views.handle_klienci),
+    path('klienci/usun/', views.delete_klient),
     
     path('faktury/', views.handle_faktury),
     path('faktury/faktura-pojazd/', views.handle_faktura_pojazd),
     path('faktury/faktura-cena/', views.get_faktura_wartosc),
     path('faktury/usun/', views.delete_faktura),
     
-    path('serwisy/', views.get_serwisy)
+    path('serwisy/', views.handle_serwisy)
 ]

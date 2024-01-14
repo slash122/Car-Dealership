@@ -135,10 +135,10 @@ def handle_pracownicy(request):
     if request.method == 'POST':
         try:
             with connection.cursor() as cursor:
-                insert_pojazd = """INSERT INTO pracownik(salon_id, imie, nazwisko, stanowisko) VALUES (%s, %s, %s, %s);"""
+                insert_pracownik = """INSERT INTO pracownik(salon_id, imie, nazwisko, stanowisko) VALUES (%s, %s, %s, %s);"""
                 values = (request.POST["salon_id"], request.POST["imie"], request.POST["nazwisko"], request.POST["stanowisko"])
                 
-                cursor.execute(insert_pojazd, values)
+                cursor.execute(insert_pracownik, values)
         except Exception as e: 
             error_msg = str(e)
     
@@ -153,8 +153,8 @@ def delete_pracownik(request):
     error_msg = None
     try:
         with connection.cursor() as cursor:
-            delete_salon = "DELETE FROM pracownik WHERE pracownik_id = %s;"
-            cursor.execute(delete_salon, (request.POST["usun_id"],))
+            delete_pracownik = "DELETE FROM pracownik WHERE pracownik_id = %s;"
+            cursor.execute(delete_pracownik, (request.POST["usun_id"],))
     except Exception as e:
         error_msg = str(e)
     
@@ -165,12 +165,43 @@ def delete_pracownik(request):
     return render(request, 'pracownik_forms.html', {"data" : result, "error_msg" : error_msg})
 # --------------------------
 
-def get_klienci(request):
+
+def handle_klienci(request):
+    error_msg = None
+    # Dodawanie nowego pracownika
+    if request.method == 'POST':
+        data_urodzenia = datetime.strptime(request.POST["data_urodzenia"], '%Y-%m-%d')
+        try:
+            with connection.cursor() as cursor:
+                insert_klient = """INSERT INTO klient(imie, nazwisko, data_urodzenia) VALUES (%s, %s, %s);"""
+                values = (request.POST["imie"], request.POST["nazwisko"], data_urodzenia)
+                
+                cursor.execute(insert_klient, values)
+        except Exception as e: 
+            error_msg = str(e)
+    
     with connection.cursor() as cursor:
-        cursor.execute("SELECT klient_id, imie, nazwisko, data_urodzenia FROM klient;")
+        cursor.execute("SELECT * FROM klient")
         result = fetchall_and_prepare(cursor)
     
-    return render(request, 'sql_query_table.html', {"data" : result})
+    return render(request, 'klient_forms.html', {"data" : result, "error_msg" : error_msg})
+
+
+def delete_klient(request):
+    error_msg = None
+    try:
+        with connection.cursor() as cursor:
+            delete_klient = "DELETE FROM klient WHERE klient_id = %s;"
+            cursor.execute(delete_klient, (request.POST["usun_id"],))
+    except Exception as e:
+        error_msg = str(e)
+    
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM klient")
+        result = fetchall_and_prepare(cursor)
+
+    return render(request, 'klient_forms.html', {"data" : result, "error_msg" : error_msg})
+# --------------------------
 
 
 # FAKTURY
@@ -197,7 +228,7 @@ def handle_faktury(request):
 
 def handle_faktura_pojazd(request):
     error_msg = None
-    # Dodawanie nowego pojazdu
+    # Dodawanie nowej faktury
     if request.method == 'POST':
         try:
             with connection.cursor() as cursor:
@@ -244,9 +275,10 @@ def delete_faktura(request):
         result = fetchall_and_prepare(cursor)
 
     return render(request, 'faktura_forms.html', {"data" : result, "error_msg" : error_msg})
+# ---------------------------
 
 
-def get_serwisy(request):
+def handle_serwisy(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM serwis;")
         result = fetchall_and_prepare(cursor)

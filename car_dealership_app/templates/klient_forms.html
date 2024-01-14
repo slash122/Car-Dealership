@@ -4,11 +4,8 @@
 <div class="report-forms-wrapper">
 </div>
 <div class="input-form-wrapper">
-    <form action="/pracownicy/" method="post">
+    <form action="/klienci/" method="post">
         {% csrf_token %}
-        
-        <label for="salon_id">Salon ID:</label>
-        <input type="number" id="salon_id" name="salon_id" required><br>
         
         <label for="imie">Imię</label>
         <input type="text" id="imie" name="imie" required><br>
@@ -16,16 +13,16 @@
         <label for="nazwisko">Nazwisko</label>
         <input type="text" id="nazwisko" name="nazwisko" required><br>
 
-        <label for="stanowisko">Stanowisko</label>
-        <input type="text" id="stanowisko" name="stanowisko" required><br>
-
+        <label for="data_urodzenia">Data data_urodzenia:</label>
+        <input type="date" id="data_urodzenia" name="data_urodzenia" required><br>
+        
         <input type="submit" value="Dodać">
     </form>
 </div>
 <div class="delete-form-wrapper">
-    <form action="/pracownicy/usun/" method="post">
+    <form action="/klienci/usun/" method="post">
         {% csrf_token %}
-        <label for="usun_id">Usuń pracownika według id</label>
+        <label for="usun_id">Usuń klienta według id</label>
         <input type="number" id="usun_id" name="usun_id" required><br>
         <input type="submit" value="Usunąć">
     </form>
@@ -36,7 +33,7 @@
     {% endif %}
 </div>
 <div>
-    <form action="/pracownicy">
+    <form action="/klienci">
         <input type="submit" value="Zapytanie domyślne">
     </form>
 </div>
