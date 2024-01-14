@@ -279,8 +279,36 @@ def delete_faktura(request):
 
 
 def handle_serwisy(request):
+    error_msg = None
+    # Dodawanie nowego pracownika
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                insert_serwis = """INSERT INTO serwis(nazwa) VALUES (%s);"""
+                values = (request.POST["nazwa"],)
+                
+                cursor.execute(insert_serwis, values)
+        except Exception as e: 
+            error_msg = str(e)
+    
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM serwis;")
+        cursor.execute("SELECT * FROM serwis")
         result = fetchall_and_prepare(cursor)
     
-    return render(request, 'sql_query_table.html', {"data" : result})
+    return render(request, 'serwis_forms.html', {"data" : result, "error_msg" : error_msg})
+
+
+def delete_serwis(request):
+    error_msg = None
+    try:
+        with connection.cursor() as cursor:
+            delete_serwis = "DELETE FROM serwis WHERE serwis_id = %s;"
+            cursor.execute(delete_serwis, (request.POST["usun_id"],))
+    except Exception as e:
+        error_msg = str(e)
+    
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM serwis")
+        result = fetchall_and_prepare(cursor)
+
+    return render(request, 'serwis_forms.html', {"data" : result, "error_msg" : error_msg})

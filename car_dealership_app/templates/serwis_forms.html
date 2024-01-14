@@ -1,0 +1,34 @@
+{% extends 'sql_query_table.html' %}
+
+{% block instance-forms %}
+<div class="report-forms-wrapper">
+</div>
+<div class="input-form-wrapper">
+    <form action="/serwisy/" method="post">
+        {% csrf_token %}
+        <label for="nazwa">Nazwa serwisu:</label>
+        <input type="text" id="nazwa" name="nazwa" required><br>
+
+        <input type="submit" value="Dodaj">
+    </form>
+    <br>
+</div>
+<div class="delete-form-wrapper">
+    <form action="/serwisy/usun/" method="post">
+        {% csrf_token %}
+        <label for="usun_id">Usuń serwis według id</label>
+        <input type="number" id="usun_id" name="usun_id" required><br>
+        <input type="submit" value="Usunąć">
+    </form>
+</div>
+<div class = "error-div">
+    {% if error_msg %}
+    <h2>{{error_msg}}</h2>
+    {% endif %}
+</div>
+<div>
+    <form action="/serwisy">
+        <input type="submit" value="Zapytanie domyślne">
+    </form>
+</div>
+{% endblock %}

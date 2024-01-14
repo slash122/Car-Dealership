@@ -24,5 +24,6 @@ urlpatterns= [
     path('faktury/faktura-cena/', views.get_faktura_wartosc),
     path('faktury/usun/', views.delete_faktura),
     
-    path('serwisy/', views.handle_serwisy)
+    path('serwisy/', views.handle_serwisy),
+    path('serwisy/usun/', views.delete_serwis),
 ]
