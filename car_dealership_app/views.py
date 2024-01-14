@@ -130,13 +130,40 @@ def delete_salon(request):
 # --------------------------
 
 def handle_pracownicy(request):
+    error_msg = None
+    # Dodawanie nowego pojazdu
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                insert_pojazd = """INSERT INTO pracownik(salon_id, imie, nazwisko, stanowisko) VALUES (%s, %s, %s, %s);"""
+                values = (request.POST["salon_id"], request.POST["imie"], request.POST["nazwisko"], request.POST["stanowisko"])
+                
+                cursor.execute(insert_pojazd, values)
+        except Exception as e: 
+            error_msg = str(e)
+    
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM pracownik;")
+        cursor.execute("SELECT * FROM pracownik")
         result = fetchall_and_prepare(cursor)
     
-    return render(request, 'sql_query_table.html', {"data" : result})
+    return render(request, 'pracownik_forms.html', {"data" : result, "error_msg" : error_msg})
 
 
+def delete_pracownik(request):
+    error_msg = None
+    try:
+        with connection.cursor() as cursor:
+            delete_salon = "DELETE FROM pracownik WHERE pracownik_id = %s;"
+            cursor.execute(delete_salon, (request.POST["usun_id"],))
+    except Exception as e:
+        error_msg = str(e)
+    
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM pracownik")
+        result = fetchall_and_prepare(cursor)
+
+    return render(request, 'pracownik_forms.html', {"data" : result, "error_msg" : error_msg})
+# --------------------------
 
 def get_klienci(request):
     with connection.cursor() as cursor:
