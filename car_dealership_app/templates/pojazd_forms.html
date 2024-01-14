@@ -1,7 +1,7 @@
 {% extends 'sql_query_table.html' %}
 
 {% block instance-forms %}
-<div class="report-forms">
+<div class="report-forms-wrapper">
     <form>
         <label for="pojazdy_marki">Wypisać ilość oraz cenę wszystkich pojazdów dla każdej marki: </label>
         <input type="button" id="pojazdy_marki" value="Wygenerować raport" name="pojazdy_marki" onclick="cars_per_brand()"><br>
@@ -26,7 +26,7 @@
     </form>
     
 </div>
-<div class="input-form">
+<div class="input-form-wrapper">
     <form action="/pojazdy/" method="post">
         {% csrf_token %}
 
@@ -58,13 +58,13 @@
         <label for="data_produkcji">Data Produkcji:</label>
         <input type="date" id="data_produkcji" name="data_produkcji" required><br>
 
-        <input type="submit" value="Dodaj">
+        <input type="submit" value="Dodać">
     </form>
 </div>
-<div>
+<div class="delete-form-wrapper">
     <form action="/pojazdy/usun/" method="post">
         {% csrf_token %}
-        <label for="usun_id">Usuń pojazd przez id</label>
+        <label for="usun_id">Usuń pojazd według id</label>
         <input type="number" id="usun_id" name="usun_id" required><br>
         <input type="submit" value="Usunąć">
     </form>

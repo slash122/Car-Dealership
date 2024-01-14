@@ -10,9 +10,19 @@ urlpatterns= [
     path('pojazdy/raport3/', views.get_pojazdy_raport3),
     path('pojazdy/usun/', views.delete_pojazd),
  
-    path('salony/', views.get_salony),
+    path('salony/', views.handle_salony),
+    path('salony/usun/', views.delete_salon),
+    
+    path('pracownicy/', views.handle_pracownicy),
+    path('pracownicy/usun/', views.delete_pracownik),
+
     path('klienci/', views.get_klienci),
-    path('pracownicy/', views.get_pracownicy),
-    path('faktury/', views.get_faktury),
+    
+    
+    path('faktury/', views.handle_faktury),
+    path('faktury/faktura-pojazd/', views.handle_faktura_pojazd),
+    path('faktury/faktura-cena/', views.get_faktura_wartosc),
+    path('faktury/usun/', views.delete_faktura),
+    
     path('serwisy/', views.get_serwisy)
 ]

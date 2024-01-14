@@ -1,0 +1,60 @@
+{% extends 'sql_query_table.html' %}
+
+{% block instance-forms %}
+<div class="report-forms-wrapper">
+    <form>
+        <label for="faktura-pojazd">Pojazdy każdej z faktur</label>
+        <input type="button" value="Wygenerować raport" onclick="getFakturaPojazd()">
+        <br>
+        <label for="faktura-cena">Wartość samochodów w fakturze</label>
+        <input type="button" value="Wygenerować raport" onclick="getFakturaCena()">
+        <script>
+            function getFakturaPojazd() {window.location.href = '/faktury/faktura-pojazd/'}
+            function getFakturaCena() {window.location.href = '/faktury/faktura-cena/'}
+        </script>
+    </form>
+</div>
+<div class="input-form-wrapper">
+    <form action="/faktury/" method="post">
+        {% csrf_token %}
+        
+        <label for="klient_id">Klient ID:</label>
+        <input type="number" id="klient_id" name="klient_id" required><br>
+
+        <label for="pracownik_id">Sprzedawca(Pracownik) ID:</label>
+        <input type="number" id="pracownik_id" name="pracownik_id" required><br>
+
+        <input type="submit" value="Dodaj">
+    </form>
+    <br>
+    <form action="/faktury/faktura-pojazd/" method="POST">
+        {% csrf_token %}
+        
+        <label for="faktura_id">Faktura ID:</label>
+        <input type="number" id="faktura_id" name="faktura_id" required><br>
+
+        <label for="pojazd_id">Pojazd ID:</label>
+        <input type="number" id="pojazd_id" name="pojazd_id" required><br>
+
+        <input type="submit" value="Dodaj">
+    </form>
+</div>
+<div class="delete-form-wrapper">
+    <form action="/faktury/usun/" method="post">
+        {% csrf_token %}
+        <label for="usun_id">Usuń fakturę według id</label>
+        <input type="number" id="usun_id" name="usun_id" required><br>
+        <input type="submit" value="Usunąć">
+    </form>
+</div>
+<div class = "error-div">
+    {% if error_msg %}
+    <h2>{{error_msg}}</h2>
+    {% endif %}
+</div>
+<div>
+    <form action="/faktury">
+        <input type="submit" value="Zapytanie domyślne">
+    </form>
+</div>
+{% endblock %}
