@@ -113,6 +113,25 @@ def handle_salony(request):
     return render(request, 'salony_forms.html', {"data" : result, "error_msg" : error_msg})
 
 
+def get_salony_przychody(request):
+    error_msg = None
+    result: tuple[list, list[dict]] = ([],[{}])
+    try: 
+        with connection.cursor() as cursor:
+            wybrany_miesiac = request.GET["miesiac"]
+            sql_miesiac = f"{wybrany_miesiac}-01"
+            select_przychody = """SELECT s.salon_id, s.nazwa, SUM(w_f_v.wartość) FROM salon s JOIN pracownik p
+            ON p.salon_id = s.salon_id JOIN wartosc_faktury_view w_f_v ON w_f_v.pracownik_id = p.pracownik_id JOIN faktura f
+            ON w_f_v.faktura_id = f.faktura_id WHERE f.data > %s AND f.data < (%s::date + INTERVAL '1 month') GROUP BY s.salon_id, s.nazwa"""        
+            cursor.execute(select_przychody, (sql_miesiac, sql_miesiac))
+            result = fetchall_and_prepare(cursor)
+
+    except Exception as e:
+        error_msg = str(e)
+
+    
+    return render(request, 'salony_forms.html', {"data" : result, "error_msg" : error_msg})           
+
 def delete_salon(request):
     error_msg = None
     try:

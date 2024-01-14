@@ -11,6 +11,7 @@ urlpatterns= [
     path('pojazdy/usun/', views.delete_pojazd),
  
     path('salony/', views.handle_salony),
+    path('salony/przychody/', views.get_salony_przychody),
     path('salony/usun/', views.delete_salon),
     
     path('pracownicy/', views.handle_pracownicy),

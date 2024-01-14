@@ -2,6 +2,11 @@
 
 {% block instance-forms %}
 <div class="report-forms-wrapper">
+    <form action="/salony/przychody/" method="GET">
+        <label for="miesiac">Przychody salona w wybranym miesiącu:</label>
+        <input type="month" name="miesiac" id="miesiac" required>
+        <input type="submit" value="Wygeneruj raport">
+    </form>
 </div>
 <div class="input-form-wrapper">
     <form action="/salony/" method="post">
