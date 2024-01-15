@@ -2,12 +2,42 @@
 
 {% block instance-forms %}
 <div class="report-forms-wrapper">
+    <form>
+        <label for="obsluga-serwisowa">Wszystkie obslugi pojazdów:</label>
+        <input type="button" id="obsluga-serwisowa" value="Wygenerować raport" onclick="getObslugaSerwisowa()">
+        <script>function getObslugaSerwisowa() {window.location.href = "/serwisy/obsluga/"}</script>
+    </form>
 </div>
 <div class="input-form-wrapper">
     <form action="/serwisy/" method="post">
         {% csrf_token %}
+        
         <label for="nazwa">Nazwa serwisu:</label>
         <input type="text" id="nazwa" name="nazwa" required><br>
+
+        <input type="submit" value="Dodaj">
+    </form><br>
+    <form action="/serwisy/obsluga/" method="post">
+        {% csrf_token %}
+        
+        <label for="serwis_id">Id serwisu:</label>
+        <input type="text" id="serwis_id" name="serwis_id" required><br>
+
+        <label for="pojazd_id">Id pojazdu:</label>
+        <input type="text" id="pojazd_id" name="pojazd_id" required><br>
+
+        <label for="klient_id">Id klienta:</label>
+        <input type="text" id="klient_id" name="klient_id" required><br>
+
+        <label for="data_oddania">Data oddania:</label>
+        <input type="date" id="data_oddania" name="data_oddania" required><br>
+
+        <label for="data_zwrotu">Data zwrotu:</label>
+        <input type="date" id="data_zwrotu" name="data_zwrotu" required><br>
+
+        <label for="komentarz">Komentarz:</label>
+        <textarea id="data_zwrotu" name="komentarz">
+        </textarea><br>
 
         <input type="submit" value="Dodaj">
     </form>
@@ -18,6 +48,13 @@
         {% csrf_token %}
         <label for="usun_id">Usuń serwis według id</label>
         <input type="number" id="usun_id" name="usun_id" required><br>
+        <input type="submit" value="Usunąć">
+    </form>
+    <form action="/serwisy/obsluga/usun" method="post">
+        {% csrf_token %}
+        <label for="obsluga_usun_id">Usuń obslugę według ID</label>
+        <input type="number" id="obsluga_usun_id" name="obsluga_usun_id" required><br>
+        
         <input type="submit" value="Usunąć">
     </form>
 </div>

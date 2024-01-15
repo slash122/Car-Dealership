@@ -129,8 +129,18 @@ def get_salony_przychody(request):
     except Exception as e:
         error_msg = str(e)
 
-    
     return render(request, 'salony_forms.html', {"data" : result, "error_msg" : error_msg})           
+
+
+def get_salony_calkowita_wartosc(request):
+    with connection.cursor() as cursor:
+        select_wartosc = """SELECT s.salon_id, s.nazwa, SUM(p.cena) as wartość FROM salon s JOIN pojazd p ON p.salon_id = s.salon_id
+        GROUP BY s.salon_id, s.nazwa;"""
+        cursor.execute(select_wartosc)
+        result = fetchall_and_prepare(cursor)
+
+    return render(request, 'salony_forms.html', {"data" : result, "error_msg" : None})
+
 
 def delete_salon(request):
     error_msg = None
@@ -164,6 +174,30 @@ def handle_pracownicy(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM pracownik")
         result = fetchall_and_prepare(cursor)
+    
+    return render(request, 'pracownik_forms.html', {"data" : result, "error_msg" : error_msg})
+
+
+def get_pracownicy_przychody(request):
+    with connection.cursor() as cursor:
+        select_wartosc = """SELECT pr.pracownik_id, pr.imie, pr.nazwisko, SUM(w_f_v.wartość) FROM pracownik pr JOIN 
+        wartosc_faktury_view w_f_v ON w_f_v.pracownik_id = pr.pracownik_id GROUP BY pr.pracownik_id, pr.imie, pr.nazwisko;"""
+        cursor.execute(select_wartosc)
+        result = fetchall_and_prepare(cursor)
+
+    return render(request, 'pracownik_forms.html', {"data" : result})
+
+
+def get_pracownik_pojazdy(request):
+    error_msg = None
+    result: tuple[list, list[dict]] = ([],[{}])
+    try:    
+        with connection.cursor() as cursor:
+            select_pojazdy = """SELECT pojazd_id, marka, model, typ, przebieg, data_produkcji FROM pracownik_pojazd_view WHERE pracownik_id = %s"""
+            cursor.execute(select_pojazdy, (request.GET["pracownik_id"],))
+            result = fetchall_and_prepare(cursor)
+    except Exception as e:
+        error_msg = str(e)
     
     return render(request, 'pracownik_forms.html', {"data" : result, "error_msg" : error_msg})
 
@@ -202,6 +236,20 @@ def handle_klienci(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM klient")
         result = fetchall_and_prepare(cursor)
+    
+    return render(request, 'klient_forms.html', {"data" : result, "error_msg" : error_msg})
+
+
+def get_klient_pojazd(request):
+    error_msg = None
+    result: tuple[list, list[dict]] = ([],[{}])
+    try:
+        with connection.cursor() as cursor:
+            pojazd_klienta = "SELECT * FROM klient_pojazd_view WHERE klient_id = %s;"
+            cursor.execute(pojazd_klienta, (request.GET["klient_id"],))
+            result = fetchall_and_prepare(cursor)
+    except Exception as e:
+        error_msg = str(e)
     
     return render(request, 'klient_forms.html', {"data" : result, "error_msg" : error_msg})
 
@@ -314,6 +362,57 @@ def handle_serwisy(request):
         cursor.execute("SELECT * FROM serwis")
         result = fetchall_and_prepare(cursor)
     
+    return render(request, 'serwis_forms.html', {"data" : result, "error_msg" : error_msg})
+
+
+def handle_obsluga(request):
+    error_msg = None
+    # result: tuple[list, list[dict]] = ([],[{}])
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                data_oddania = datetime.strptime(request.POST["data_oddania"], '%Y-%m-%d')
+                data_zwrotu = datetime.strptime(request.POST["data_zwrotu"], '%Y-%m-%d')
+                print(data_oddania)
+                print(data_zwrotu)
+                
+                insert_obsluga = """INSERT INTO obsluga_serwisowa(serwis_id, pojazd_id, klient_id, data_oddania, data_zwrotu, komentarz) 
+                VALUES(%s, %s, %s, %s, %s, %s)"""
+                values = (request.POST["serwis_id"], request.POST["pojazd_id"],
+                          request.POST["klient_id"], data_oddania, data_zwrotu,
+                          request.POST["komentarz"])
+                
+                cursor.execute(insert_obsluga, values)
+                
+        except Exception as e:
+            error_msg = str(e)
+
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT s.nazwa, o_s.obsluga_serwisowa_id, o_s.pojazd_id, m.marka, p.model, o_s.klient_id, kl.imie, kl.nazwisko 
+                       FROM obsluga_serwisowa o_s JOIN serwis s ON o_s.serwis_id = s.serwis_id 
+                       JOIN pojazd p ON o_s.pojazd_id = p.pojazd_id JOIN marka m ON p.marka_id = m.marka_id 
+                       JOIN klient kl ON kl.klient_id = o_s.klient_id""")
+        result = fetchall_and_prepare(cursor)
+
+    return render(request, 'serwis_forms.html', {"data" : result, "error_msg" : error_msg})
+
+
+def delete_obsluga(request):
+    error_msg = None
+    try:
+        with connection.cursor() as cursor:
+            delete_obsluga = "DELETE FROM obsluga_serwisowa WHERE obsluga_serwisowa_id = %s;"
+            cursor.execute(delete_obsluga, (request.POST["obsluga_usun_id"],))
+    except Exception as e:
+        error_msg = str(e)
+    
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT s.nazwa, o_s.obsluga_serwisowa_id, o_s.pojazd_id, m.marka, p.model, o_s.klient_id, kl.imie, kl.nazwisko 
+                       FROM obsluga_serwisowa o_s JOIN serwis s ON o_s.serwis_id = s.serwis_id 
+                       JOIN pojazd p ON o_s.pojazd_id = p.pojazd_id JOIN marka m ON p.marka_id = m.marka_id 
+                       JOIN klient kl ON kl.klient_id = o_s.klient_id""")
+        result = fetchall_and_prepare(cursor)
+
     return render(request, 'serwis_forms.html', {"data" : result, "error_msg" : error_msg})
 
 

@@ -2,6 +2,16 @@
 
 {% block instance-forms %}
 <div class="report-forms-wrapper">
+    <form>
+        <label>Całkowita wartość sprzedanych pojazdów każdym pracownikiem:</label>
+        <input type="button" value="Wygeneruj raport" onclick="getWartosc()">
+        <script>function getWartosc() {window.location.href = '/pracownicy/calkowite-przychody/'}</script>
+    </form>
+    <form action="/pracownicy/pojazdy/" method="GET">
+        <label for="pracownik_id">Pojazdy sprzedane pracownikiem (id):</label>
+        <input type="number" id="pracownik_id" name="pracownik_id">
+        <input type="submit" value="Wygeneruj raport">
+    </form>
 </div>
 <div class="input-form-wrapper">
     <form action="/pracownicy/" method="post">

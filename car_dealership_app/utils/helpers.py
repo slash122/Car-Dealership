@@ -10,7 +10,9 @@ def dictfetchall(cursor):
 
 
 def prepare_data(result):
-    column_names = [desc for desc in result[0].keys()]
+    column_names = []
+    if (len(result) != 0):
+        column_names = [desc for desc in result[0].keys()]
     data = (column_names, result)
     return data
 

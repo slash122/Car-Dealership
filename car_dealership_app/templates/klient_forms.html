@@ -2,6 +2,11 @@
 
 {% block instance-forms %}
 <div class="report-forms-wrapper">
+    <form action="/klienci/pojazd/" method="GET">
+        <label for="klient_id">Wszystkie pojazdy wybranego klienta:</label>
+        <input type="number" id="klient_id" name="klient_id">
+        <input type="submit" value="Wygenerować raport">
+    </form>
 </div>
 <div class="input-form-wrapper">
     <form action="/klienci/" method="post">
