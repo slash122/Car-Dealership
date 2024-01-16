@@ -7,6 +7,11 @@
         <input type="number" id="klient_id" name="klient_id">
         <input type="submit" value="Wygenerować raport">
     </form>
+    <form action="/klienci/obsluga/" method="GET">
+        <label for="o_klient_id">Wszystkie obslugi serwisowe u wybranego klienta:</label>
+        <input type="number" id="o_klient_id" name="o_klient_id">
+        <input type="submit" value="Wygenerować raport">
+    </form>
 </div>
 <div class="input-form-wrapper">
     <form action="/klienci/" method="post">
@@ -26,6 +31,7 @@
 </div>
 <div class="delete-form-wrapper">
     <form action="/klienci/usun/" method="post">
+        
         {% csrf_token %}
         <label for="usun_id">Usuń klienta według id</label>
         <input type="number" id="usun_id" name="usun_id" required><br>

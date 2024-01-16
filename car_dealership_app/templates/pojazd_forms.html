@@ -3,10 +3,10 @@
 {% block instance-forms %}
 <div class="report-forms-wrapper">
     <form>
-        <label for="pojazdy_marki">Wypisać ilość oraz cenę wszystkich pojazdów dla każdej marki: </label>
+        <label for="pojazdy_marki">Wypisać ilość oraz cenę wszystkich pojazdów dla każdej marki: </label><br>
         <input type="button" id="pojazdy_marki" value="Wygenerować raport" name="pojazdy_marki" onclick="cars_per_brand()"><br>
         
-        <label for="pojazdy_rank">Wypisać ranking ceny pojazdu odnośnie wszystkich pojazdów oraz odnośnie pojazdów tej samej marki: </label>
+        <label for="pojazdy_rank">Wypisać ranking ceny pojazdu odnośnie wszystkich pojazdów oraz odnośnie pojazdów tej samej marki: </label><br>
         <input type="button" id="pojazdy_rank" value="Wygenerować raport" name="pojazdy_rank" onclick="cars_ranking()">
         
         <script>
@@ -21,7 +21,7 @@
             {% for row in marki.1 %}
             <option value="{{row.marka}}">{{row.marka}}</option>
             {% endfor %}
-        </select>
+        </select><br>   
         <input type="submit" value="Wygenerować raport">
     </form>
     
@@ -29,42 +29,48 @@
 <div class="input-form-wrapper">
     <form action="/pojazdy/" method="post">
         {% csrf_token %}
+        <div class="column-container">
+            
+            <div class="input-form-column">
+                <label for="salon_id">Salon ID:</label><br>
+                <input type="number" id="salon_id" name="salon_id" required><br>
 
-        <label for="salon_id">Salon ID:</label>
-        <input type="number" id="salon_id" name="salon_id" required><br>
+                <label for="marka">Marka:</label><br>
+                <select id="marka" name="marka">
+                    {% for marka in marki.1 %}
+                    <option value="{{marka.marka}}">{{marka.marka}}</option>
+                    {% endfor %}
+                </select><br>
 
-        <label for="marka">Marka:</label>
-        <select id="marka" name="marka">
-            {% for marka in marki.1 %}
-            <option value="{{marka.marka}}">{{marka.marka}}</option>
-            {% endfor %}
-        </select><br>
+                <label for="typ">Typ:</label><br>
+                <input type="text" id="typ" name="typ" required maxlength="50"><br>
 
-        <label for="typ">Typ:</label>
-        <input type="text" id="typ" name="typ" required maxlength="50"><br>
+                <label for="model">Model:</label><br>
+                <input type="text" id="model" name="model" required maxlength="50"><br>
+            </div>
+            
+            <div class="input-form-column">
+                <label for="numer_vin">Numer VIN:</label><br>
+                <input type="text" id="numer_vin" name="numer_vin" required maxlength="17"><br>
 
-        <label for="model">Model:</label>
-        <input type="text" id="model" name="model" required maxlength="50"><br>
+                <label for="cena">Cena:</label><br>
+                <input type="number" id="cena" name="cena" required><br>
 
-        <label for="numer_vin">Numer VIN:</label>
-        <input type="text" id="numer_vin" name="numer_vin" required maxlength="17"><br>
+                <label for="przebieg">Przebieg:</label><br>
+                <input type="number" id="przebieg" name="przebieg" required><br>
 
-        <label for="cena">Cena:</label>
-        <input type="number" id="cena" name="cena" required><br>
-
-        <label for="przebieg">Przebieg:</label>
-        <input type="number" id="przebieg" name="przebieg" required><br>
-
-        <label for="data_produkcji">Data Produkcji:</label>
-        <input type="date" id="data_produkcji" name="data_produkcji" required><br>
-
+                <label for="data_produkcji">Data Produkcji:</label><br>
+                <input type="date" id="data_produkcji" name="data_produkcji" required><br>
+            </div>
+        
+        </div>
         <input type="submit" value="Dodać">
     </form>
 </div>
 <div class="delete-form-wrapper">
     <form action="/pojazdy/usun/" method="post">
         {% csrf_token %}
-        <label for="usun_id">Usuń pojazd według id</label>
+        <label for="usun_id">Usuń pojazd według id</label><br>
         <input type="number" id="usun_id" name="usun_id" required><br>
         <input type="submit" value="Usunąć">
     </form>

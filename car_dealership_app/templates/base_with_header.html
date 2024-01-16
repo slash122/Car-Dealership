@@ -2,13 +2,17 @@
 
 {% block content %}
     <header class="header">
+        <div class="header-link-wrapper">
         <a href="/pojazdy/">Pojazdy</a>
         <a href="/salony/">Salony</a>
         <a href="/pracownicy/">Pracownicy</a>
         <a href="/klienci/">Klienci</a>
         <a href="/faktury/">Faktury</a>
         <a href="/serwisy/">Obsluga serwisowa</a>
+        </div>
     </header>
-    {% block instance-content %} 
-    {% endblock %}
+    <div class="content-wrapper">
+        {% block instance-content %} 
+        {% endblock %}
+    </div>
 {% endblock %}

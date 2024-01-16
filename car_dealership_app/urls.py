@@ -22,6 +22,7 @@ urlpatterns= [
 
     path('klienci/', views.handle_klienci),
     path('klienci/pojazd/', views.get_klient_pojazd),
+    path('klienci/obsluga/', views.get_klient_obsluga),
     path('klienci/usun/', views.delete_klient),
     
     path('faktury/', views.handle_faktury),

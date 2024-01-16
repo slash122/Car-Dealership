@@ -78,7 +78,7 @@ def delete_pojazd(request):
     error_msg = None
     with connection.cursor() as cursor:
         try:
-            delete_sql = "DELETE FROM pojazd WHERE pojazd_id = %s;"
+            delete_sql = "SELECT usun_pojazd_z_wyjatkiem(%s)"
             cursor.execute(delete_sql, (request.POST["usun_id"],))
         except Exception as e:
             error_msg = str(e)
@@ -237,6 +237,21 @@ def handle_klienci(request):
         cursor.execute("SELECT * FROM klient")
         result = fetchall_and_prepare(cursor)
     
+    return render(request, 'klient_forms.html', {"data" : result, "error_msg" : error_msg})
+
+
+def get_klient_obsluga(request):
+    error_msg = None
+    result: tuple[list, list[dict]] = ([],[{}])
+    try:
+        with connection.cursor() as cursor:
+            obsluga_klient = """SELECT * FROM klient_obsluga_view WHERE klient_id = %s;"""
+            cursor.execute(obsluga_klient, (request.GET["o_klient_id"],))
+            result = fetchall_and_prepare(cursor)
+    
+    except Exception as e:
+        error_msg = str(e)
+
     return render(request, 'klient_forms.html', {"data" : result, "error_msg" : error_msg})
 
 
