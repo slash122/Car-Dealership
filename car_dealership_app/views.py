@@ -5,6 +5,11 @@ from datetime import datetime
 from .utils.helpers import *
 # from django.cursors import DictCursor
 
+# Welcome page\
+def welcome_page(request):
+    return render(request, 'welcome_page.html')
+
+
 # ---------- POJAZDY
 def handle_pojazdy(request):
     error_msg = None
@@ -146,7 +151,7 @@ def delete_salon(request):
     error_msg = None
     try:
         with connection.cursor() as cursor:
-            delete_salon = "DELETE FROM salon WHERE salon_id = %s;"
+            delete_salon = "SELECT usun_salon_z_wyjatkiem(%s);"
             cursor.execute(delete_salon, (request.POST["usun_id"],))
     except Exception as e:
         error_msg = str(e)
@@ -202,11 +207,27 @@ def get_pracownik_pojazdy(request):
     return render(request, 'pracownik_forms.html', {"data" : result, "error_msg" : error_msg})
 
 
+def fire_pracownik(request):
+    error_msg = None
+    try:
+        with connection.cursor() as cursor:
+            zwolnij_pracownika = "SELECT zwolnij_pracownika_z_wyjatkiem(%s);"
+            cursor.execute(zwolnij_pracownika, (request.POST["zwolnij_id"],))
+    except Exception as e:
+        error_msg = str(e)
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM pracownik")
+        result = fetchall_and_prepare(cursor)
+    
+    return render(request, 'pracownik_forms.html', {"data" : result, "error_msg" : error_msg})
+
+
 def delete_pracownik(request):
     error_msg = None
     try:
         with connection.cursor() as cursor:
-            delete_pracownik = "DELETE FROM pracownik WHERE pracownik_id = %s;"
+            delete_pracownik = "SELECT usun_pracownika_z_wyjatkiem(%s);"
             cursor.execute(delete_pracownik, (request.POST["usun_id"],))
     except Exception as e:
         error_msg = str(e)
@@ -273,7 +294,7 @@ def delete_klient(request):
     error_msg = None
     try:
         with connection.cursor() as cursor:
-            delete_klient = "DELETE FROM klient WHERE klient_id = %s;"
+            delete_klient = "SELECT usun_klienta_z_wyjatkiem(%s);"
             cursor.execute(delete_klient, (request.POST["usun_id"],))
     except Exception as e:
         error_msg = str(e)
@@ -293,7 +314,7 @@ def handle_faktury(request):
     if request.method == 'POST':
         try:
             with connection.cursor() as cursor:
-                insert_faktura = "INSERT INTO faktura(data, klient_id, pracownik_id) VALUES(CURRENT_DATE, %s, %s)"
+                insert_faktura = "SELECT utworz_fakture_z_wyjatkiem(%s, %s);"
                 values = (request.POST["klient_id"], request.POST["pracownik_id"])
                 cursor.execute(insert_faktura, values)
         
@@ -342,12 +363,12 @@ def delete_faktura(request):
     print(faktura_id)
     try:
         with connection.cursor() as cursor:
+            delete_faktura = "SELECT usun_fakture_z_wyjatkiem(%s);"
+            cursor.execute(delete_faktura, (faktura_id,))
             unset_null_pojazd = "UPDATE pojazd SET salon_id = 1 WHERE pojazd_id IN (SELECT pojazd_id FROM klient_pojazd_view WHERE faktura_id = %s);"
             cursor.execute(unset_null_pojazd, (faktura_id,) )
             delete_faktura_pojazd = "DELETE FROM faktura_pojazd WHERE faktura_id = %s;"
             cursor.execute(delete_faktura_pojazd, (faktura_id,))
-            delete_faktura = "DELETE FROM faktura WHERE faktura_id = %s;"
-            cursor.execute(delete_faktura, (faktura_id,))
     except Exception as e:
         error_msg = str(e)
 
@@ -416,7 +437,7 @@ def delete_obsluga(request):
     error_msg = None
     try:
         with connection.cursor() as cursor:
-            delete_obsluga = "DELETE FROM obsluga_serwisowa WHERE obsluga_serwisowa_id = %s;"
+            delete_obsluga = "SELECT usun_obsluge_z_wyjatkiem(%s);"
             cursor.execute(delete_obsluga, (request.POST["obsluga_usun_id"],))
     except Exception as e:
         error_msg = str(e)
@@ -435,7 +456,7 @@ def delete_serwis(request):
     error_msg = None
     try:
         with connection.cursor() as cursor:
-            delete_serwis = "DELETE FROM serwis WHERE serwis_id = %s;"
+            delete_serwis = "SELECT usun_serwis_z_wyjatkiem(%s);"
             cursor.execute(delete_serwis, (request.POST["usun_id"],))
     except Exception as e:
         error_msg = str(e)

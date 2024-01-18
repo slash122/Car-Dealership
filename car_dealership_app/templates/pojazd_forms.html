@@ -27,6 +27,7 @@
     
 </div>
 <div class="input-form-wrapper">
+    Dodać pojazd:
     <form action="/pojazdy/" method="post">
         {% csrf_token %}
         <div class="column-container">
@@ -75,12 +76,12 @@
         <input type="submit" value="Usunąć">
     </form>
 </div>
+{% if error_msg %}
 <div class = "error-div">
-    {% if error_msg %}
     <h2>{{error_msg}}</h2>
-    {% endif %}
 </div>
-<div>
+{% endif %}
+<div class="default-div">
     <form action="/pojazdy">
         <input type="submit" value="Zapytanie domyślne">
     </form>

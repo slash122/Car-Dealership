@@ -4,28 +4,28 @@
 <div class="report-forms-wrapper">
     <form action="/klienci/pojazd/" method="GET">
         <label for="klient_id">Wszystkie pojazdy wybranego klienta:</label>
-        <input type="number" id="klient_id" name="klient_id">
+        <input type="number" id="klient_id" name="klient_id"><br>
         <input type="submit" value="Wygenerować raport">
     </form>
     <form action="/klienci/obsluga/" method="GET">
         <label for="o_klient_id">Wszystkie obslugi serwisowe u wybranego klienta:</label>
-        <input type="number" id="o_klient_id" name="o_klient_id">
+        <input type="number" id="o_klient_id" name="o_klient_id"><br>
         <input type="submit" value="Wygenerować raport">
     </form>
 </div>
 <div class="input-form-wrapper">
     <form action="/klienci/" method="post">
         {% csrf_token %}
-        
-        <label for="imie">Imię</label>
-        <input type="text" id="imie" name="imie" required><br>
-        
-        <label for="nazwisko">Nazwisko</label>
-        <input type="text" id="nazwisko" name="nazwisko" required><br>
+        Dodać klienta:<br>
+            <label for="imie">Imię</label><br>
+            <input type="text" id="imie" name="imie" required><br>
+            
+            <label for="nazwisko">Nazwisko</label><br>
+            <input type="text" id="nazwisko" name="nazwisko" required><br>
 
-        <label for="data_urodzenia">Data data_urodzenia:</label>
-        <input type="date" id="data_urodzenia" name="data_urodzenia" required><br>
-        
+            <label for="data_urodzenia">Data urodzenia:</label><br>
+            <input type="date" id="data_urodzenia" name="data_urodzenia" required><br>
+            
         <input type="submit" value="Dodać">
     </form>
 </div>
@@ -38,12 +38,12 @@
         <input type="submit" value="Usunąć">
     </form>
 </div>
+{% if error_msg %}
 <div class = "error-div">
-    {% if error_msg %}
     <h2>{{error_msg}}</h2>
-    {% endif %}
 </div>
-<div>
+{% endif %}
+<div class="default-div">
     <form action="/klienci">
         <input type="submit" value="Zapytanie domyślne">
     </form>

@@ -3,12 +3,13 @@
 {% block instance-forms %}
 <div class="report-forms-wrapper">
     <form>
-        <label for="obsluga-serwisowa">Wszystkie obslugi pojazdów:</label>
+        <label for="obsluga-serwisowa">Wszystkie obslugi pojazdów:</label><br>
         <input type="button" id="obsluga-serwisowa" value="Wygenerować raport" onclick="getObslugaSerwisowa()">
         <script>function getObslugaSerwisowa() {window.location.href = "/serwisy/obsluga/"}</script>
     </form>
 </div>
 <div class="input-form-wrapper">
+    Dodać serwis:<br>
     <form action="/serwisy/" method="post">
         {% csrf_token %}
         
@@ -16,32 +17,34 @@
         <input type="text" id="nazwa" name="nazwa" required><br>
 
         <input type="submit" value="Dodaj">
-    </form><br>
+    </form>
+    Dodać obslugę serwisową<br>
     <form action="/serwisy/obsluga/" method="post">
         {% csrf_token %}
-        
-        <label for="serwis_id">Id serwisu:</label>
-        <input type="text" id="serwis_id" name="serwis_id" required><br>
+        <div class="column-container">
+            <div class="input-form-column">
+                <label for="serwis_id">Id serwisu:</label><br>
+                <input type="text" id="serwis_id" name="serwis_id" required><br>
 
-        <label for="pojazd_id">Id pojazdu:</label>
-        <input type="text" id="pojazd_id" name="pojazd_id" required><br>
+                <label for="pojazd_id">Id pojazdu:</label><br>
+                <input type="text" id="pojazd_id" name="pojazd_id" required><br>
 
-        <label for="klient_id">Id klienta:</label>
-        <input type="text" id="klient_id" name="klient_id" required><br>
+                <label for="klient_id">Id klienta:</label><br>
+                <input type="text" id="klient_id" name="klient_id" required><br>
 
-        <label for="data_oddania">Data oddania:</label>
-        <input type="date" id="data_oddania" name="data_oddania" required><br>
+                <label for="data_oddania">Data oddania:</label><br>
+                <input type="date" id="data_oddania" name="data_oddania" required><br>
 
-        <label for="data_zwrotu">Data zwrotu:</label>
-        <input type="date" id="data_zwrotu" name="data_zwrotu" required><br>
-
-        <label for="komentarz">Komentarz:</label>
-        <textarea id="data_zwrotu" name="komentarz">
-        </textarea><br>
-
+                <label for="data_zwrotu">Data zwrotu:</label><br>
+                <input type="date" id="data_zwrotu" name="data_zwrotu" required><br>
+            </div>
+            <div class="input-form-column">
+                <label for="komentarz">Komentarz:</label><br>
+                <textarea id="data_zwrotu" name="komentarz"></textarea><br>
+            </div>
+        </div>
         <input type="submit" value="Dodaj">
     </form>
-    <br>
 </div>
 <div class="delete-form-wrapper">
     <form action="/serwisy/usun/" method="post">
@@ -58,12 +61,12 @@
         <input type="submit" value="Usunąć">
     </form>
 </div>
+{% if error_msg %}
 <div class = "error-div">
-    {% if error_msg %}
     <h2>{{error_msg}}</h2>
-    {% endif %}
 </div>
-<div>
+{% endif %}
+<div class="default-div">
     <form action="/serwisy">
         <input type="submit" value="Zapytanie domyślne">
     </form>

@@ -4,22 +4,23 @@
 <div class="report-forms-wrapper">
     <form action="/salony/przychody/" method="GET">
         <label for="miesiac">Przychody salona w wybranym miesiącu:</label>
-        <input type="month" name="miesiac" id="miesiac" required>
+        <input type="month" name="miesiac" id="miesiac" required><br>
         <input type="submit" value="Wygeneruj raport">
     </form>
     <form>
-        <label for="wartosc-pojazdow">Wartość pojazdów w każdym salonie:</label>
+        <label for="wartosc-pojazdow">Wartość pojazdów w każdym salonie:</label><br>
         <input type="button" value="Wygeneruj raport" onclick="getWartosc()">
         <script>function getWartosc() {window.location.href = '/salony/calkowite-przychody/'}</script>
     </form>
 </div>
 <div class="input-form-wrapper">
     <form action="/salony/" method="post">
+        Dodać salon:<br>
         {% csrf_token %}
-        <label for="nazwa">Nazwa salonu</label>
+        <label for="nazwa">Nazwa salonu</label><br>
         <input type="text" id="nazwa" name="nazwa" required><br>
         
-        <label for="adres">Adres salonu</label>
+        <label for="adres">Adres salonu</label><br>
         <input type="text" id="adres" name="adres" required><br>
 
         <input type="submit" value="Dodać">
@@ -28,17 +29,17 @@
 <div class="delete-form-wrapper">
     <form action="/salony/usun/" method="post">
         {% csrf_token %}
-        <label for="usun_id">Usuń salon według id</label>
+        <label for="usun_id">Usuń salon według id</label><br>
         <input type="number" id="usun_id" name="usun_id" required><br>
         <input type="submit" value="Usunąć">
     </form>
 </div>
+{% if error_msg %}
 <div class = "error-div">
-    {% if error_msg %}
     <h2>{{error_msg}}</h2>
-    {% endif %}
 </div>
-<div>
+{% endif %}
+<div class="default-div">
     <form action="/salony">
         <input type="submit" value="Zapytanie domyślne">
     </form>

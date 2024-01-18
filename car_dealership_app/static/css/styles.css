@@ -47,18 +47,24 @@ header a:hover {
 }
 
 .report-forms-wrapper {
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
     border-style: solid;
-    border-color: black;
+    border-width: 2px;
+    border-color: #001d17;
+    box-shadow: 8px 8px 23px -12px #001d17;
     border-radius: 19px;
+    background-color: #3f3f3f;
 }
 
 .input-form-wrapper {
     margin-top: 20px;
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
     border-style: solid;
-    border-color: black;
+    border-width: 2px;
+    border-color: #001d17;
+    box-shadow: 8px 8px 23px -12px #001d17;
     border-radius: 19px;
+    background-color: #3f3f3f;
 }
 
 .column-container {
@@ -74,19 +80,22 @@ header a:hover {
 
 .delete-form-wrapper {
     margin-top: 20px;
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
     border-style: solid;
-    border-color: black;
+    border-width: 2px;
+    border-color: #001d17;
+    box-shadow: 8px 8px 23px -12px #001d17;
     border-radius: 19px;
+    background-color: #3f3f3f;
 }
 
-.content-wrapper form > * {
+/* .content-wrapper form > * {
     margin-bottom: 10px;
 }
 
 .content-wrapper form  > *:last-child {
     margin-bottom: 0px;
-}
+} */
 
 /* BUTTONS */
 
@@ -113,20 +122,44 @@ input[type="text"], input[type="number"], input[type="date"], input[type="month"
 }
 
 
+/*margins for zapytanie domyslne button and exceprion message*/
+.error-div, .default-div {
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+.error-div {
+    background-color: #e0e0e0;
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(167, 20, 20);
+    box-shadow: 8px 8px 23px -12px rgb(167, 20, 20);
+    border-radius: 19px;
+    color: rgb(167, 20, 20);
+}
+
 
 
 /* TABLE */
+.query-table-wrapper {
+    margin-top: 20px;
+}
+
 
 table {
     border-spacing: 0px; 
-    margin-top: 10px;
+    
     width: 100%;
     color: rgb(0, 0, 0);
     background-color: whitesmoke;
     text-align: left;
     padding: 5px 10px;
-    border-color: black;
+    
     border-style: solid;
+    border-width: 2px;
+    border-color: #001d17;
+    box-shadow: 8px 8px 23px -12px #001d17;
+    
     border-radius: 19px;
 }
 
@@ -140,4 +173,29 @@ tr:nth-child(even) {
 
 tr:nth-child(odd) {
     background-color: whitesmoke;
+}
+
+
+/* BUTTONS */
+input[type=button], input[type="submit"] {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+/* TEXTAREA */
+
+textarea {
+    resize: none;
+    border-radius: 6px;
+    width: 400px;
+    height: 200px;
+}
+
+
+
+/* WELCOME PAGE DIV */
+
+.welcome-page-div {
+    text-align: center;
 }

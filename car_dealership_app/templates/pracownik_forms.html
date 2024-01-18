@@ -9,24 +9,31 @@
     </form>
     <form action="/pracownicy/pojazdy/" method="GET">
         <label for="pracownik_id">Pojazdy sprzedane pracownikiem (id):</label>
-        <input type="number" id="pracownik_id" name="pracownik_id"><br>
+        <input type="number" id="pracownik_id" name="pracownik_id" required><br>
         <input type="submit" value="Wygeneruj raport">
+    </form>
+    <form action="/pracownicy/zwolnic/" method="POST">
+        {% csrf_token %}
+        <label for="zw_pracownik_id">Zwolnić pracownika:</label>
+        <input type="number" id="zwolnij_id" name="zwolnij_id" required><br>
+        <input type="submit" value="Zwolnić">
     </form>
 </div>
 <div class="input-form-wrapper">
+    Dodać pracownika:
     <form action="/pracownicy/" method="post">
         {% csrf_token %}
         
-        <label for="salon_id">Salon ID:</label>
+        <label for="salon_id">Salon ID:</label><br>
         <input type="number" id="salon_id" name="salon_id" required><br>
         
-        <label for="imie">Imię</label>
+        <label for="imie">Imię</label><br>
         <input type="text" id="imie" name="imie" required><br>
         
-        <label for="nazwisko">Nazwisko</label>
+        <label for="nazwisko">Nazwisko</label><br>
         <input type="text" id="nazwisko" name="nazwisko" required><br>
 
-        <label for="stanowisko">Stanowisko</label>
+        <label for="stanowisko">Stanowisko</label><br>
         <input type="text" id="stanowisko" name="stanowisko" required><br>
 
         <input type="submit" value="Dodać">
@@ -35,17 +42,17 @@
 <div class="delete-form-wrapper">
     <form action="/pracownicy/usun/" method="post">
         {% csrf_token %}
-        <label for="usun_id">Usuń pracownika według id</label><br>
+        <label for="usun_id">Usuń pracownika według id</label>
         <input type="number" id="usun_id" name="usun_id" required><br>
         <input type="submit" value="Usunąć">
     </form>
 </div>
+{% if error_msg %}
 <div class = "error-div">
-    {% if error_msg %}
     <h2>{{error_msg}}</h2>
-    {% endif %}
 </div>
-<div>
+{% endif %}
+<div class="default-div">
     <form action="/pracownicy">
         <input type="submit" value="Zapytanie domyślne">
     </form>
